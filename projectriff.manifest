@@ -1,0 +1,6 @@
+istio https://storage.googleapis.com/projectriff/istio/istio-v1.1.7-lean-riff.yaml
+knative-build https://storage.googleapis.com/knative-releases/build/previous/v0.7.0/build.yaml
+knative-serving https://storage.googleapis.com/knative-releases/serving/previous/v0.7.0/serving.yaml
+riff-system https://storage.googleapis.com/projectriff/riff-system/riff-system-0.1.0-snapshot.yaml
+riff-application-build-template https://storage.googleapis.com/projectriff/riff-buildtemplate/riff-application-clusterbuildtemplate-0.3.0-snapshot.yaml
+riff-function-build-template https://storage.googleapis.com/projectriff/riff-buildtemplate/riff-function-clusterbuildtemplate-0.3.0-snapshot.yaml
