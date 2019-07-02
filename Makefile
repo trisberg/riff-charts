@@ -3,10 +3,8 @@ VERSION ?= $(shell cat VERSION)
 .PHONY: build
 build: projectriff-%.tgz
 
-projectriff-%.tgz: repository projectriff projectriff.manifest
-	# download config and apply overlays
-	# TODO remove fallback fetch that bypasses ytt
-	cat projectriff.manifest | xargs -L1 sh -c 'echo "curl -L $$1 | ytt -f overlays/ --ignore-unknown-comments -f - > projectriff/templates/$$0.yml || curl -L $$1 > projectriff/templates/$$0.yml"' | sh
+projectriff-%.tgz: repository projectriff projectriff.yaml
+	$(shell ./prepare.sh projectriff)
 	helm package projectriff --destination repository --version ${VERSION}
 
 .PHONY: publish
