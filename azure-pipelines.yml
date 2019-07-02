@@ -1,7 +1,7 @@
 variables:
   fatsDir: '$(system.defaultWorkingDirectory)/../fats'
   fatsRepo: projectriff/fats
-  fatsRefspec: fe05ebb7c2a73889b7f34dc41350bc0115b9cb71 # master as of 2019-06-28
+  fatsRefspec: ef4811e8d258463151b3d060b14905720cbbd023 # master as of 2019-07-02
 
 jobs:
 
@@ -12,21 +12,9 @@ jobs:
   - bash: ./ci/fats-fetch.sh $(fatsDir) $(fatsRefspec) $(fatsRepo)
     displayName: 'Fetch FATS'
   - bash: |
-      # $(fatsDir)/install.sh helm
+      $(fatsDir)/install.sh helm
       $(fatsDir)/install.sh gcloud
-      # $(fatsDir)/install.sh ytt
-
-      # TODO remove once FATS can install helm
-      mkdir helm
-      curl -L https://get.helm.sh/helm-v2.14.1-linux-amd64.tar.gz | tar xz -C helm
-      chmod +x helm/linux-amd64/helm
-      sudo cp helm/linux-amd64/helm /usr/local/bin/
-      rm -rf 
-
-      # TODO remove once FATS can install ytt
-      curl -L https://github.com/k14s/ytt/releases/download/v0.13.0/ytt-linux-amd64 > ytt
-      chmod +x ytt
-      sudo mv ytt /usr/local/bin/
+      $(fatsDir)/install.sh ytt
     env:
       GCLOUD_CLIENT_SECRET: '$(GcloudClientSecret)'
     displayName: 'Install tools'
