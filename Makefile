@@ -17,7 +17,7 @@ publish-snapshot: build
 	gsutil cp gs://projectriff/charts/snapshots/index.yaml repository/snapshots/
 	helm repo index repository/snapshots/ --url https://projectriff.storage.googleapis.com/charts/snapshots --merge repository/snapshots/index.yaml
 	gsutil cp -a public-read repository/snapshots/*.tgz gs://projectriff/charts/snapshots
-  	gsutil cp -a public-read repository/snapshots/index.yaml gs://projectriff/charts/snapshots
+	gsutil cp -a public-read repository/snapshots/index.yaml gs://projectriff/charts/snapshots/
 
 repository:
 	mkdir repository
