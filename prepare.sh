@@ -20,11 +20,6 @@ do
   mv ${file}.tmp ${file}
 
   # apply ytt overlays
-  if ytt --ignore-unknown-comments -f overlays/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain > ${file}.tmp ; then
-    mv ${file}.tmp ${file}
-  else
-    # TODO remove recovery
-    rm ${file}.tmp
-  fi
-  
+  ytt --ignore-unknown-comments -f overlays/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain > ${file}.tmp
+  mv ${file}.tmp ${file}
 done < "${chart}.yaml"
