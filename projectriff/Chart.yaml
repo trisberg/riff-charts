@@ -1,6 +1,5 @@
 apiVersion: v1
 name: projectriff
-version: 0.4.0-snapshot
 kubeVersion: ^1.11
 description: riff is for functions
 keywords:
