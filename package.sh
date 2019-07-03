@@ -1,8 +1,12 @@
 #!/bin/bash
 
 chart=$1
+version=$2
+destination=$3
 
 # download config and apply overlays
+
+mkdir -p charts/${chart}/templates
 
 while IFS= read -r line
 do
@@ -22,3 +26,5 @@ do
   ytt --ignore-unknown-comments -f overlays/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain ${args} > ${file}.tmp
   mv ${file}.tmp ${file}
 done < "charts/${chart}.yaml"
+
+helm package ./charts/${chart} --destination ${destination} --version ${version}

@@ -1,21 +1,13 @@
 VERSION ?= $(shell cat VERSION)
 
-.PHONY: build
-build: charts/projectriff-istio-%.tgz charts/projectriff-riff-%.tgz
-
-charts/projectriff-istio-%.tgz: repository charts/projectriff-istio charts/projectriff-istio.yaml
-	$(shell ./prepare.sh projectriff-istio)
-	helm package ./charts/projectriff-istio --destination repository --version ${VERSION}
-
-charts/projectriff-riff-%.tgz: repository charts/projectriff-riff charts/projectriff-riff.yaml
-	$(shell ./prepare.sh projectriff-riff)
-	helm package ./charts/projectriff-riff --destination repository --version ${VERSION}
+.PHONY: package
+package: repository
 
 .PHONY: publish
 publish: publish-snapshot
 
 .PHONY: publish-snapshot
-publish-snapshot: build
+publish-snapshot: repository
 	mkdir -p repository/snapshots
 	cp repository/*.tgz repository/snapshots/
 	gsutil cp gs://projectriff/charts/snapshots/index.yaml repository/snapshots/
@@ -23,10 +15,12 @@ publish-snapshot: build
 	gsutil cp -a public-read repository/snapshots/*.tgz gs://projectriff/charts/snapshots
 	gsutil cp -a public-read repository/snapshots/index.yaml gs://projectriff/charts/snapshots/
 
-repository:
-	mkdir repository
+repository: charts package.sh
+	mkdir -p repository
+	./package.sh projectriff-istio ${VERSION} repository
+	./package.sh projectriff-riff ${VERSION} repository
 
 .PHONY: clean
 clean:
 	rm -rf repository
-	rm -rf charts/*/templates/*
+	rm -rf charts/*/templates

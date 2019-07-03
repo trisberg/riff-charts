@@ -7,4 +7,4 @@
 ---
 spec:
   #@overlay/replace
-  type: "{{ .Values.ServiceType }}"
+  type: "{{ .Values.global.k8s.service.type }}"

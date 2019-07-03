@@ -1,6 +1,6 @@
 # projectriff Helm charts
 
-Helm charts to insall istio and riff.
+Helm charts to install Istio and riff.
 
 ## Install
 
@@ -27,23 +27,19 @@ Helm charts to insall istio and riff.
    helm repo update
    ```
 
-1. Install istio
-
-   Append `--set ServiceType=NodePort` for clusters that do not support LoadBalancer services, like Minikube.
-
-   ```sh
-   helm install projectriff-snapshots/projectriff-istio -n istio --devel
-   ```
-
 1. Install riff
 
+   Append `--set istio.enabled=true` if Istio is not already installed in your cluster.
+
+   Append `--set global.k8s.service.type=NodePort` for clusters that do not support LoadBalancer services, like Minikube.
+
    ```sh
-   helm install projectriff-snapshots/projectriff-riff -n riff --devel
+   helm install projectriff-snapshots/projectriff-riff --name riff --devel
    ```
 
 1. Enjoy.
 
-## Building charts
+## Creating charts
 
 ### Prerequisites
 
@@ -54,13 +50,13 @@ Helm charts to insall istio and riff.
 
 ### Steps
 
-Build charts locally. Charts will be placed in the `repository` directory.
+Package charts locally. Charts will be placed in the `repository` directory.
 
 ```sh
-make build
+make package
 ```
 
-Publish charts
+Publish charts (auth required)
 
 ```sh
 make publish
