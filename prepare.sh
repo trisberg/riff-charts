@@ -3,23 +3,22 @@
 chart=$1
 
 # download config and apply overlays
-# TODO remove fallback fetch that bypasses ytt
-# cat projectriff.manifest | xargs -L1 sh -c 'echo "curl -L $$1 | ytt -f overlays/ --ignore-unknown-comments -f - > projectriff/templates/$$0.yml || curl -L $$1 > projectriff/templates/$$0.yml"' | sh
 
 while IFS= read -r line
 do
   arr=($line)
   name=${arr[0]%?}
   url=${arr[1]}
+  args=$(echo $line | cut -d "#" -s -f 2)
   file=${chart}/templates/${name}.yml
 
-  curl -L ${url} > ${file}
+  curl -L -s ${url} > ${file}
 
-  # escape existing go template
+  # escape existing go template so helm doesn't get confused
   cat ${file} | sed -e 's/{{/{{`{{/g' | sed -e 's/}}/}}`}}/g' > ${file}.tmp
   mv ${file}.tmp ${file}
 
   # apply ytt overlays
-  ytt --ignore-unknown-comments -f overlays/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain > ${file}.tmp
+  ytt --ignore-unknown-comments -f overlays/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain ${args} > ${file}.tmp
   mv ${file}.tmp ${file}
 done < "${chart}.yaml"

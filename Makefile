@@ -1,7 +1,11 @@
 VERSION ?= $(shell cat VERSION)
 
 .PHONY: build
-build: projectriff-%.tgz
+build: istio-%.tgz projectriff-%.tgz
+
+istio-%.tgz: repository istio istio.yaml
+	$(shell ./prepare.sh istio)
+	helm package istio --destination repository --version ${VERSION}
 
 projectriff-%.tgz: repository projectriff projectriff.yaml
 	$(shell ./prepare.sh projectriff)
@@ -25,4 +29,5 @@ repository:
 .PHONY: clean
 clean:
 	rm -rf repository
+	rm -rf istio/templates/*
 	rm -rf projectriff/templates/*
