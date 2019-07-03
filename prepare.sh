@@ -10,7 +10,7 @@ do
   name=${arr[0]%?}
   url=${arr[1]}
   args=$(echo $line | cut -d "#" -s -f 2)
-  file=${chart}/templates/${name}.yml
+  file=charts/${chart}/templates/${name}.yml
 
   curl -L -s ${url} > ${file}
 
@@ -21,4 +21,4 @@ do
   # apply ytt overlays
   ytt --ignore-unknown-comments -f overlays/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain ${args} > ${file}.tmp
   mv ${file}.tmp ${file}
-done < "${chart}.yaml"
+done < "charts/${chart}.yaml"

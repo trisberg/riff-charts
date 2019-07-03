@@ -1,15 +1,15 @@
 VERSION ?= $(shell cat VERSION)
 
 .PHONY: build
-build: istio-%.tgz projectriff-%.tgz
+build: charts/projectriff-istio-%.tgz charts/projectriff-riff-%.tgz
 
-istio-%.tgz: repository istio istio.yaml
-	$(shell ./prepare.sh istio)
-	helm package istio --destination repository --version ${VERSION}
+charts/projectriff-istio-%.tgz: repository charts/projectriff-istio charts/projectriff-istio.yaml
+	$(shell ./prepare.sh projectriff-istio)
+	helm package ./charts/projectriff-istio --destination repository --version ${VERSION}
 
-projectriff-%.tgz: repository projectriff projectriff.yaml
-	$(shell ./prepare.sh projectriff)
-	helm package projectriff --destination repository --version ${VERSION}
+charts/projectriff-riff-%.tgz: repository charts/projectriff-riff charts/projectriff-riff.yaml
+	$(shell ./prepare.sh projectriff-riff)
+	helm package ./charts/projectriff-riff --destination repository --version ${VERSION}
 
 .PHONY: publish
 publish: publish-snapshot
@@ -29,5 +29,4 @@ repository:
 .PHONY: clean
 clean:
 	rm -rf repository
-	rm -rf istio/templates/*
-	rm -rf projectriff/templates/*
+	rm -rf charts/*/templates/*
