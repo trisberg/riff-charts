@@ -17,7 +17,7 @@ Helm charts to install Istio and riff.
    ```sh
    kubectl create serviceaccount tiller -n kube-system
    kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount kube-system:tiller
-   helm init --service-account tiller
+   helm init --wait --service-account tiller
    ```
 
 1. Load the projectriff charts
