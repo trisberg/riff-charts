@@ -38,7 +38,7 @@ Helm charts to install Istio and riff.
    helm install projectriff/istio --name istio --namespace istio-system --wait
    ```
 
-For more configuration options see the [Istio documentation](https://archive.istio.io/v1.1/docs/reference/config/installation-options/).
+   For more configuration options see the [Istio documentation](https://archive.istio.io/v1.1/docs/reference/config/installation-options/).
 
 1. Install riff
 
