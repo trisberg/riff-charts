@@ -1,0 +1,40 @@
+#!/bin/sh
+
+action=$CNAB_ACTION
+name=$CNAB_INSTALLATION_NAME 
+echo $NODE_PORT
+use_node_port=""
+if [ "$NODE_PORT" = true ]; then
+    use_node_port="--set gateways.istio-ingressgateway.type=NodePort"
+fi
+
+case $action in
+    install)
+        echo "Installing helm client"
+        helm init --client-only
+
+        echo "Installing Istio"
+        helm install -n istio /charts/istio --namespace istio-system ${use_node_port} --wait
+
+        echo "Installing riff"
+        helm install -n riff /charts/riff
+        ;;
+    uninstall)
+        echo "uninstall action"
+        helm delete --purge riff
+        helm delete --purge istio
+        ;;
+    upgrade)
+        echo "Upgrade action"
+        helm upgrade $name $mychart
+       #TODO: need to also be able to pass in updated values from params
+        ;;
+    status)
+        echo "Status action"
+        helm status $name
+        ;;
+    *)
+    echo "No action for $action"
+    ;;
+esac
+echo "Action $action complete for $name"

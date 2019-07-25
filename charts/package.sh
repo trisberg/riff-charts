@@ -45,3 +45,5 @@ if [ -f ${chart_dir}/Chart.yaml ] ; then
 fi
 
 helm package ${chart_dir}/${chart} --destination ${destination} --version ${version}
+
+cp -r ${chart_dir}/${chart} cnab/
