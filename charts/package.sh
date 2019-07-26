@@ -46,4 +46,4 @@ fi
 
 helm package ${chart_dir}/${chart} --destination ${destination} --version ${version}
 
-cp -r ${chart_dir}/${chart} cnab/
+cp ${destination}/${chart}* cnab/

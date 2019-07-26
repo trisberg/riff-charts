@@ -15,8 +15,6 @@ RUN apt-get update && apt-get install -y curl \
 
 COPY Dockerfile /cnab/Dockerfile
 COPY app/run /cnab/app/run
-COPY istio /charts/istio
-COPY riff /charts/riff
+COPY *tgz /charts/
 
 CMD ["/cnab/app/run"]
-

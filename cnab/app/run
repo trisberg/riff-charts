@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -o errexit
 set -o nounset
@@ -6,11 +6,12 @@ set -o pipefail
 
 action=$CNAB_ACTION
 name=$CNAB_INSTALLATION_NAME 
-echo $NODE_PORT
 use_node_port=""
 if [ "$NODE_PORT" = true ]; then
     use_node_port="--set gateways.istio-ingressgateway.type=NodePort"
 fi
+istio_chart=`ls /charts/istio*tgz`
+riff_chart=`ls /charts/riff*tgz`
 
 case $action in
     install)
@@ -18,10 +19,10 @@ case $action in
         helm init --client-only
 
         echo "Installing Istio"
-        helm install -n istio /charts/istio --namespace istio-system ${use_node_port} --wait
+        helm install -n istio ${istio_chart} --namespace istio-system ${use_node_port} --wait
 
         echo "Installing riff"
-        helm install -n riff /charts/riff
+        helm install -n riff ${riff_chart}
         ;;
     uninstall)
         echo "uninstall action"
