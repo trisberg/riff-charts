@@ -31,12 +31,12 @@ case $action in
         ;;
     upgrade)
         echo "Upgrade action"
-        helm upgrade $name $mychart
-       #TODO: need to also be able to pass in updated values from params
+        echo "not supported yet"
         ;;
     status)
         echo "Status action"
-        helm status $name
+        helm status istio
+        helm status riff
         ;;
     *)
     echo "No action for $action"
