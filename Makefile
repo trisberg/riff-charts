@@ -13,9 +13,12 @@ repository: charts/fetch-istio.sh charts/package.sh
 templates:
 	./charts/update-template.sh riff
 
+bundle: clean repository
+	mkdir cnab/charts && cp repository/*.tgz cnab/charts/ && duffle build .
+
 .PHONY: clean
 clean:
 	rm -rf repository
 	rm -rf charts/istio/istio
 	rm -rf charts/riff/riff
-	rm -rf cnab/*.tgz
+	rm -rf cnab/charts

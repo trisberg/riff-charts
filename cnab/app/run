@@ -10,8 +10,6 @@ use_node_port=""
 if [ "$NODE_PORT" = true ]; then
     use_node_port="--set gateways.istio-ingressgateway.type=NodePort"
 fi
-istio_chart=`ls /charts/istio*tgz`
-riff_chart=`ls /charts/riff*tgz`
 
 case $action in
     install)
@@ -28,6 +26,7 @@ case $action in
         echo "uninstall action"
         helm delete --purge riff
         helm delete --purge istio
+        kubectl get crd -o name | grep -E "(istio|projectriff|knative)" | xargs kubectl delete
         ;;
     upgrade)
         echo "Upgrade action"
