@@ -18,7 +18,6 @@ RUN apt-get update && apt-get install -y curl \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-COPY Dockerfile app /cnab/
-COPY charts /charts/
+COPY . /cnab/
 
 CMD ["/cnab/app/run"]

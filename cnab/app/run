@@ -17,14 +17,15 @@ case $action in
         helm init --client-only
 
         echo "Installing Istio"
-        helm install -n istio /charts/istio*.tgz --namespace istio-system ${use_node_port} --wait
+        helm install -n istio /cnab/charts/istio*.tgz --namespace istio-system ${use_node_port} --wait
 
         echo "Installing riff"
-        helm install -n riff /charts/riff*.tgz
+        helm install -n riff /cnab/charts/riff*.tgz
         ;;
     uninstall)
-        echo "uninstall action"
+        echo "Uninstalling riff"
         helm delete --purge riff
+        echo "Uninstalling istio"
         helm delete --purge istio
         kubectl get crd -o name | grep -E "(istio|projectriff|knative)" | xargs kubectl delete
         ;;
