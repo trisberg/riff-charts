@@ -18,4 +18,4 @@ clean:
 	rm -rf repository
 	rm -rf charts/istio/istio
 	rm -rf charts/riff/riff
-	rm -rf cnab/*tgz
+	rm -rf cnab/*.tgz

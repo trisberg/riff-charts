@@ -1,8 +1,8 @@
 {
     "name": "riff",
-    "version": "0.1.0",
+    "version": "0.0.0",
     "schemaVersion": "v1.0.0-WD",
-    "description": "Installs riff",
+    "description": "riff is for functions",
     "keywords": [
         "riff"
     ],

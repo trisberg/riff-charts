@@ -19,10 +19,10 @@ case $action in
         helm init --client-only
 
         echo "Installing Istio"
-        helm install -n istio ${istio_chart} --namespace istio-system ${use_node_port} --wait
+        helm install -n istio /charts/istio*.tgz --namespace istio-system ${use_node_port} --wait
 
         echo "Installing riff"
-        helm install -n riff ${riff_chart}
+        helm install -n riff /charts/riff*.tgz
         ;;
     uninstall)
         echo "uninstall action"
