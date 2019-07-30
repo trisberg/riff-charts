@@ -1,14 +1,19 @@
 #!/bin/bash
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
 chart=$1
 version=$2
 destination=$3
 
+build_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/build/${chart}"
 chart_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/${chart}"
 
 # download config and apply overlays
 
-mkdir -p ${chart_dir}/${chart}/templates
+mkdir -p ${build_dir}/templates
 
 if [ -f ${chart_dir}/templates.yaml ] ; then
   while IFS= read -r line
@@ -17,7 +22,7 @@ if [ -f ${chart_dir}/templates.yaml ] ; then
     name=${arr[0]%?}
     url=${arr[1]}
     args=$(echo $line | cut -d "#" -s -f 2)
-    file=${chart_dir}/${chart}/templates/${name}.yml
+    file=${build_dir}/templates/${name}.yml
 
     curl -L -s ${url} > ${file}
 
@@ -32,16 +37,25 @@ if [ -f ${chart_dir}/templates.yaml ] ; then
 fi
 
 if [ -f ${chart_dir}/values.yaml ] ; then
-  if [ -f ${chart_dir}/${chart}/values.yaml ] ; then
+  if [ -f ${build_dir}/values.yaml ] ; then
     # merge custom values
-    yq merge -i -x ${chart_dir}/${chart}/values.yaml ${chart_dir}/values.yaml
+    yq merge -i -x ${build_dir}/values.yaml ${chart_dir}/values.yaml
   else
-    cp ${chart_dir}/values.yaml ${chart_dir}/${chart}/values.yaml
+    cp ${chart_dir}/values.yaml ${build_dir}/values.yaml
   fi
 fi
 
 if [ -f ${chart_dir}/Chart.yaml ] ; then
-  cp ${chart_dir}/Chart.yaml ${chart_dir}/${chart}/Chart.yaml
+  cp ${chart_dir}/Chart.yaml ${build_dir}/Chart.yaml
 fi
 
-helm package ${chart_dir}/${chart} --destination ${destination} --version ${version}
+if [ -f ${chart_dir}/requirements.yaml ] ; then
+  cp ${chart_dir}/requirements.yaml ${build_dir}/requirements.yaml
+fi
+
+if [ -d ${chart_dir}/charts ] ; then
+  mkdir ${build_dir}/charts
+  cp -LR ${chart_dir}/charts/* ${build_dir}/charts/
+fi
+
+helm package ${build_dir} --destination ${destination} --version ${version}
