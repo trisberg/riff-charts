@@ -8,4 +8,4 @@ kubectl get pods --all-namespaces --field-selector=status.phase!=Running \
 echo "NODE:"
 kubectl describe node || true
 echo "RIFF:"
-kubectl describe riff || true
+kubectl describe riff --all-namespaces || true
