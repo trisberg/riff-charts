@@ -56,14 +56,20 @@ Helm charts to install Istio and riff.
 ### Uninstall
 
 ```
+# remove any riff resources
+kubectl delete riff --all-namespaces --all
+
+# remove any Knative resources (if Knative runtime is enabled)
+kubectl delete knative --all-namespaces --all
+
 # remove riff
 helm delete --purge riff
 kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.io/managed-by=Tiller,app.kubernetes.io/instance=riff
 
 # remove istio (if installed)
 helm delete --purge istio
-kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.io/managed-by=Tiller,app.kubernetes.io/instance=istio
 kubectl delete namespace istio-system
+kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.io | xargs -L1 kubectl delete
 ```
 
 ## Creating charts
