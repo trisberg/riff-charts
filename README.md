@@ -56,8 +56,11 @@ Helm charts to install Istio and riff.
 ### Uninstall
 
 ```
-# remove any Knative deployers (if Knative runtime is enabled)
-kubectl delete --all-namespaces deployer.knative.projectriff.io --all
+# remove any riff resources
+kubectl delete riff --all-namespaces --all
+
+# remove any Knative resources (if Knative runtime is enabled)
+kubectl delete knative --all-namespaces --all
 
 # remove riff
 helm delete --purge riff
