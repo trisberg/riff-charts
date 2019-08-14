@@ -68,8 +68,8 @@ kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.
 
 # remove istio (if installed)
 helm delete --purge istio
-kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.io/managed-by=Tiller,app.kubernetes.io/instance=istio
 kubectl delete namespace istio-system
+kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.io | xargs -L1 kubectl delete
 ```
 
 ## Creating charts
