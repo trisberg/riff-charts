@@ -1,8 +1,12 @@
 dependencies:
   - name: cert-manager
     condition: cert-manager.enabled
+  - name: kpack
+    condition: kpack.enabled
   - name: riff-build
     condition: riff.build.enabled
+  - name: riff-builders
+    condition: riff.builders.enabled
   - name: riff-core-runtime
     condition: riff.runtimes.core.enabled
   - name: riff-knative-runtime
