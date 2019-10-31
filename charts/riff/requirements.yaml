@@ -1,6 +1,14 @@
 dependencies:
   - name: cert-manager
     condition: cert-manager.enabled
+  - name: keda
+    condition: keda.enabled
+    tags:
+      - streaming-runtime
+  - name: knative
+    condition: knative.enabled
+    tags:
+      - knative-runtime
   - name: kpack
     condition: kpack.enabled
   - name: riff-build
@@ -9,7 +17,13 @@ dependencies:
     condition: riff.builders.enabled
   - name: riff-core-runtime
     condition: riff.runtimes.core.enabled
+    tags:
+      - core-runtime
   - name: riff-knative-runtime
     condition: riff.runtimes.knative.enabled
+    tags:
+      - knative-runtime
   - name: riff-streaming-runtime
     condition: riff.runtimes.streaming.enabled
+    tags:
+      - streaming-runtime

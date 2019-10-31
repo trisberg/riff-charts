@@ -1,10 +1,12 @@
 ---
 cert-manager:
   enabled: true
-keda:
-  enabled: true
-knative:
-  enabled: true
+## Uncomment the following to disable the chart even if the tag is specified
+# keda:
+#   enabled: false
+## Uncomment the following to disable the chart even if the tag is specified
+# knative:
+#   enabled: false
 kpack:
   enabled: true
 riff:
@@ -12,10 +14,15 @@ riff:
     enabled: true
   builders:
     enabled: true
-  runtimes:
-    core:
-      enabled: false
-    knative:
-      enabled: false
-    streaming:
-      enabled: false
+## Uncomment any runtime to install the chart even if the corresponding tag isn't specified
+#  runtimes:
+#    core:
+#      enabled: true
+#    knative:
+#      enabled: true
+#    streaming:
+#      enabled: true
+tags:
+  core-runtime: false
+  knative-runtime: false
+  streaming-runtime: false

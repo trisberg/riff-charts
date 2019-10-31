@@ -44,10 +44,11 @@ Helm charts to install Istio and riff.
 
    Append:
 
-   - `--set riff.runtimes.core.enabled=true` to enable the Core runtime
-   - `--set riff.runtimes.knative.enabled=true` to enable the Knative runtime
-   - `--set riff.runtimes.streaming.enabled=true` to enable the Streaming runtime
+   - `--set tags.core-runtime=true` to enable the Core runtime
+   - `--set tags.knative-runtime=true` to enable the Knative runtime
+   - `--set tags.streaming-runtime=true` to enable the Streaming runtime
    - `--set cert-manager.enabled=false` if cert-manager is already installed
+   - `--set knative.enabled=false` if Knative serving is already installed
    - `--devel` for the latest snapshot.
 
    ```sh
