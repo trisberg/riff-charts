@@ -41,4 +41,4 @@ fi
 echo "Install riff"
 helm install ${riff_chart} --name riff --wait \
   --set cert-manager.enabled=false \
-  --set riff.runtimes.${RUNTIME}.enabled=true
+  --set tags.${RUNTIME}-runtime=true
