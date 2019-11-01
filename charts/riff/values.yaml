@@ -1,28 +1,27 @@
 ---
-cert-manager:
-  enabled: true
-## Uncomment the following to disable the chart even if the tag is specified
-# keda:
-#   enabled: false
-## Uncomment the following to disable the chart even if the tag is specified
-# knative:
-#   enabled: false
-kpack:
-  enabled: true
-riff:
-  build:
-    enabled: true
-  builders:
-    enabled: true
-## Uncomment any runtime to install the chart even if the corresponding tag isn't specified
+## Use the '--set' flag for any of these properties to override defaults and/or tags settings
+#cert-manager:
+#  enabled: true
+#keda:
+#  enabled: false
+#knative:
+#  enabled: false
+#kpack:
+#  enabled: true
+#riff:
+#  build:
+#    enabled: true
+#  builders:
+#    enabled: true
 #  runtimes:
 #    core:
-#      enabled: true
+#      enabled: false
 #    knative:
-#      enabled: true
+#      enabled: false
 #    streaming:
-#      enabled: true
+#      enabled: false
 tags:
+  build: true
   core-runtime: false
   knative-runtime: false
   streaming-runtime: false
