@@ -9,3 +9,4 @@ metadata:
   annotations:
     #@overlay/match missing_ok=True
     "helm.sh/hook": crd-install
+    "helm.sh/hook-delete-policy": before-hook-creation
