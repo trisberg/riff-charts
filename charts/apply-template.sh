@@ -5,10 +5,12 @@ set -o nounset
 set -o pipefail
 
 template=${1}
-comment=${2:-#}
+comment=${2:-}
 
 if [ -f $template ] ; then
-  echo "${comment} DO NOT EDIT - this file is the output of the '$template' template "
+  if [ "${comment}" != "" ]; then
+    echo "${comment} DO NOT EDIT - this file is the output of the '$template' template "
+  fi
   while IFS= read -r line
   do
     expressions=$(echo $line | grep -oE '\{\{[^}]+\}\}') || true
