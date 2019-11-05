@@ -33,6 +33,10 @@ if [ -f ${chart_dir}/templates.yaml ] ; then
     # apply ytt overlays
     ytt -f overlays/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain ${args} > ${file}.tmp
     mv ${file}.tmp ${file}
+
+    # resolve tags to digests
+    k8s-tag-resolver ${file} -o ${file}.tmp
+    mv ${file}.tmp ${file}
   done < "${chart_dir}/templates.yaml"
 fi
 
@@ -43,6 +47,12 @@ if [ -f ${chart_dir}/values.yaml ] ; then
   else
     cp ${chart_dir}/values.yaml ${build_dir}/values.yaml
   fi
+fi
+
+# Resolve any image tags to digests in our values.yaml
+if [ -f ${build_dir}/values.yaml ] ; then
+    k8s-tag-resolver ${build_dir}/values.yaml -o ${build_dir}/values.yaml.tmp
+    mv ${build_dir}/values.yaml.tmp ${build_dir}/values.yaml
 fi
 
 if [ -f ${chart_dir}/Chart.yaml ] ; then
