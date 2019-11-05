@@ -1,3 +1,5 @@
+![](https://github.com/projectriff/charts/workflows/CI/badge.svg)
+
 # projectriff Helm charts
 
 Helm charts to install Istio and riff.
