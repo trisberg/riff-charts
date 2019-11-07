@@ -51,13 +51,12 @@ jobs:
       run: |
         $FATS_DIR/install.sh kubectl
         $FATS_DIR/install.sh riff
-        $FATS_DIR/install.sh helm
+        $FATS_DIR/install.sh helm 3.0.0-rc.3
         $FATS_DIR/install.sh ytt 0.14.0
         $FATS_DIR/install.sh k8s-tag-resolver
         sudo snap install yq
     - name: Package charts
       run: |
-        helm init --client-only
         make clean package
     - name: Start FATS
       run: $FATS_DIR/start.sh

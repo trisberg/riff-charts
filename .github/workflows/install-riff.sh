@@ -26,7 +26,8 @@ fi
 source $FATS_DIR/macros/helm-init.sh
 
 echo "Install Cert Manager"
-helm install ${certmanager_chart} --name cert-manager --wait
+kubectl create namespace cert-manager
+helm install ${certmanager_chart} --name cert-manager --namespace cert-manager --wait
 sleep 5
 wait_pod_selector_ready app=cert-manager cert-manager
 wait_pod_selector_ready app=webhook cert-manager
@@ -35,6 +36,7 @@ source $FATS_DIR/macros/no-resource-requests.sh
 
 if [ $RUNTIME = "knative" ]; then
   echo "Install Istio"
+  kubectl create namespace istio-system
   helm install ${istio_chart} --name istio --namespace istio-system --wait --set gateways.istio-ingressgateway.type=${K8S_SERVICE_TYPE}
 
   echo "Checking for ready ingress"
@@ -42,6 +44,7 @@ if [ $RUNTIME = "knative" ]; then
 fi
 
 echo "Install riff"
-helm install ${riff_chart} --name riff --wait \
+kubectl create namespace riff-system
+helm install ${riff_chart} --name riff --namespace riff-system --wait \
   --set cert-manager.enabled=false \
   --set tags.${RUNTIME}-runtime=true
