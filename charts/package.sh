@@ -14,6 +14,7 @@ chart_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/${c
 # download config and apply overlays
 
 mkdir -p ${build_dir}/templates
+mkdir -p ${build_dir}/crds
 
 if [ -f ${chart_dir}/templates.yaml ] ; then
   while IFS= read -r line
@@ -23,16 +24,23 @@ if [ -f ${chart_dir}/templates.yaml ] ; then
     url=${arr[1]}
     args=$(echo $line | cut -d "#" -s -f 2)
     file=${build_dir}/templates/${name}.yml
+    crds=${build_dir}/crds/${name}-crds.yml
 
     curl -L -s ${url} > ${file}
 
     # escape existing go template so helm doesn't get confused
     cat ${file} | sed -e 's/{{/{{`{{/g' | sed -e 's/}}/}}`}}/g' > ${file}.tmp
     mv ${file}.tmp ${file}
+    cp ${file} ${crds}
 
-    # apply ytt overlays
-    ytt -f overlays/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain ${args} > ${file}.tmp
+    # apply ytt overlays to file
+    ytt -f overlays/no-crds/ -f ${file} --file-mark $(basename ${file}):type=yaml-plain ${args} > ${file}.tmp
     mv ${file}.tmp ${file}
+
+    # apply ytt overlays to crds
+    ytt -f overlays/only-crds/ -f ${crds} --file-mark $(basename ${crds}):type=yaml-plain ${args} > ${crds}.tmp
+    mv ${crds}.tmp ${crds}
+    find $(dirname ${crds}) -type f -size 0 -delete
 
     # resolve tags to digests
     k8s-tag-resolver ${file} -o ${file}.tmp

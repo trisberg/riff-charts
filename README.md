@@ -10,17 +10,9 @@ Helm charts to install Istio and riff.
 
 - a running kubernetes cluster (1.14+)
 - kubectl (1.14+)
-- helm (2.13+)
+- helm (3.0+)
 
 ### Steps
-
-1. Initialize Helm
-
-   ```sh
-   kubectl create serviceaccount tiller -n kube-system
-   kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount kube-system:tiller
-   helm init --wait --service-account tiller
-   ```
 
 1. Load the projectriff charts
 
@@ -29,7 +21,7 @@ Helm charts to install Istio and riff.
    helm repo update
    ```
 
-1. Install Istio (optional, required for the Knative runtime)
+2. Install Istio (optional, required for the Knative runtime)
 
    Append:
 
@@ -37,12 +29,13 @@ Helm charts to install Istio and riff.
    - `--devel` for the latest snapshot.
    
    ```sh
+   kubectl create namespace istio-system
    helm install projectriff/istio --name istio --namespace istio-system --wait
    ```
 
    For more configuration options see the [Istio documentation](https://archive.istio.io/v1.1/docs/reference/config/installation-options/).
 
-1. Install riff
+3. Install riff
 
    Append:
 
@@ -54,10 +47,11 @@ Helm charts to install Istio and riff.
    - `--devel` for the latest snapshot.
 
    ```sh
-   helm install projectriff/riff --name riff
+   kubectl create namespace riff-system
+   helm install projectriff/riff --name riff --namespace riff-system
    ```
 
-1. Enjoy.
+4. Enjoy.
 
 ### Uninstall
 
@@ -69,11 +63,11 @@ kubectl delete riff --all-namespaces --all
 kubectl delete knative --all-namespaces --all
 
 # remove riff
-helm delete --purge riff
+helm delete riff --namespace riff-system
 kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.io/managed-by=Tiller,app.kubernetes.io/instance=riff
 
 # remove istio (if installed)
-helm delete --purge istio
+helm delete istio --namespace istio-system
 kubectl delete namespace istio-system
 kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.io | xargs -L1 kubectl delete
 ```
@@ -83,9 +77,10 @@ kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.i
 ### Prerequisites
 
 - internet access
-- helm (2.13+)
+- helm (3.0+)
 - ytt (0.14.0)
 - yq
+- k8s-tag-resolver
 - gcloud (for publishing)
 
 ### Steps

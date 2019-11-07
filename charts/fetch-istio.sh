@@ -10,3 +10,6 @@ curl -L -s https://storage.googleapis.com/istio-release/releases/${version}/char
 
 cat ${build_dir}/Chart.yaml | sed -e "s/name: istio/name: ${chart}/g" > ${build_dir}/Chart.yaml.tmp
 mv ${build_dir}/Chart.yaml.tmp ${build_dir}/Chart.yaml
+
+cat ${build_dir}/Chart.yaml | sed -e "s/apiVersion: v1/apiVersion: v2/g" > ${build_dir}/Chart.yaml.tmp
+mv ${build_dir}/Chart.yaml.tmp ${build_dir}/Chart.yaml
