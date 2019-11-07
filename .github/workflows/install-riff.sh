@@ -23,8 +23,6 @@ else
   riff_chart=./repository/riff-${version}.tgz
 fi
 
-source $FATS_DIR/macros/helm-init.sh
-
 echo "Install Cert Manager"
 kubectl create namespace cert-manager
 helm install ${certmanager_chart} --name cert-manager --namespace cert-manager --wait
