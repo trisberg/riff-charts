@@ -14,14 +14,7 @@ Helm charts to install Istio and riff.
 
 ### Steps
 
-1. Load the projectriff charts
-
-   ```sh
-   helm repo add projectriff https://projectriff.storage.googleapis.com/charts/releases
-   helm repo update
-   ```
-
-2. Install Istio (optional, required for the Knative runtime)
+1. Install Istio (optional, required for the Knative runtime)
 
    Append:
 
@@ -35,7 +28,7 @@ Helm charts to install Istio and riff.
 
    For more configuration options see the [Istio documentation](https://archive.istio.io/v1.1/docs/reference/config/installation-options/).
 
-3. Install riff
+1. Install riff
 
    Append:
 
@@ -51,7 +44,7 @@ Helm charts to install Istio and riff.
    helm install riff projectriff/riff --namespace riff-system
    ```
 
-4. Enjoy.
+1. Enjoy.
 
 ### Uninstall
 
