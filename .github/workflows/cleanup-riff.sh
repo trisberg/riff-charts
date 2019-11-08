@@ -5,7 +5,8 @@ uninstall_chart() {
   local namespace=$2
 
   helm delete $name --namespace $namespace
-  kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.io/managed-by=Tiller,app.kubernetes.io/instance=$name 
+  kubectl delete customresourcedefinitions.apiextensions.k8s.io -l app.kubernetes.io/managed-by=Tiller,app.kubernetes.io/instance=$name
+  kubectl delete namespace $namespace 
 }
 
 source $FATS_DIR/macros/cleanup-user-resources.sh
@@ -22,7 +23,8 @@ echo "Uninstall riff"
 uninstall_chart riff riff-system
 
 echo "Uninstall Cert Manager"
-uninstall_chart cert-manager cert-manager
+uninstall_chart cert-manager cert-manager-helm
+kubectl delete namespace cert-manager
 
 echo "Uninstall helm"
 source $FATS_DIR/macros/helm-reset.sh

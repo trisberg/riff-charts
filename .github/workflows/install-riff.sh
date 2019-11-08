@@ -24,8 +24,8 @@ else
 fi
 
 echo "Install Cert Manager"
-kubectl create namespace cert-manager
-helm install cert-manager ${certmanager_chart} --namespace cert-manager --wait
+kubectl create namespace cert-manager-helm
+helm install cert-manager ${certmanager_chart} --namespace cert-manager-helm --wait
 sleep 5
 wait_pod_selector_ready app=cert-manager cert-manager
 wait_pod_selector_ready app=webhook cert-manager
