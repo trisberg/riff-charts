@@ -25,6 +25,3 @@ uninstall_chart riff riff-system
 echo "Uninstall Cert Manager"
 uninstall_chart cert-manager cert-manager-helm
 kubectl delete namespace cert-manager
-
-echo "Uninstall helm"
-source $FATS_DIR/macros/helm-reset.sh
