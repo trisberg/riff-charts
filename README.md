@@ -30,7 +30,7 @@ Helm charts to install Istio and riff.
    
    ```sh
    kubectl create namespace istio-system
-   helm install projectriff/istio --name istio --namespace istio-system --wait
+   helm install istio projectriff/istio --namespace istio-system --wait
    ```
 
    For more configuration options see the [Istio documentation](https://archive.istio.io/v1.1/docs/reference/config/installation-options/).
@@ -48,7 +48,7 @@ Helm charts to install Istio and riff.
 
    ```sh
    kubectl create namespace riff-system
-   helm install projectriff/riff --name riff --namespace riff-system
+   helm install riff projectriff/riff --namespace riff-system
    ```
 
 4. Enjoy.
