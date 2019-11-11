@@ -6,7 +6,6 @@ set -o pipefail
 
 chart=$1
 version=$2
-destination=$3
 
 build_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/build/${chart}"
 chart_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/${chart}"
@@ -73,7 +72,7 @@ if [ -d ${chart_dir}/charts ] ; then
 fi
 
 if [[ ${chart} == riff* ]] ; then
-  helm package ${build_dir} --destination ${destination} --version ${version} --app-version ${version}
+  helm package ${build_dir} --destination repository --version ${version} --app-version ${version}
 else
-  helm package ${build_dir} --destination ${destination} --version ${version}
+  helm package ${build_dir} --destination repository --version ${version}
 fi
