@@ -10,7 +10,7 @@ on:
 env:
   FATS_DIR: fats
   FATS_REPO: projectriff/fats
-  FATS_REFSPEC: 1728e95a256987f7ccc0dde2f66fa0298d1c122c # master as of 2019-11-07
+  FATS_REFSPEC: 3a04f9584db0071869b680ccd55d720214868d38 # master as of 2019-11-12
 
 jobs:
 
@@ -20,13 +20,27 @@ jobs:
     strategy:
       matrix:
         config:
-        - os: ubuntu-latest
-          qualifier: core
+        - qualifier: core-helm
+          os: ubuntu-latest
+          installer: helm
           cluster: kind
           registry: docker-daemon
           runtime: core
-        - os: ubuntu-latest
-          qualifier: knative
+        - qualifier: core-kapp
+          os: ubuntu-latest
+          installer: kapp
+          cluster: kind
+          registry: docker-daemon
+          runtime: core
+        - qualifier: knative-helm
+          os: ubuntu-latest
+          installer: helm
+          cluster: kind
+          registry: docker-daemon
+          runtime: knative
+        - qualifier: knative-kapp
+          os: ubuntu-latest
+          installer: kapp
           cluster: kind
           registry: docker-daemon
           runtime: knative
@@ -53,6 +67,7 @@ jobs:
         $FATS_DIR/install.sh riff
         $FATS_DIR/install.sh helm
         $FATS_DIR/install.sh ytt 0.14.0
+        $FATS_DIR/install.sh kapp 0.14.0
         $FATS_DIR/install.sh k8s-tag-resolver
         sudo snap install yq
     - name: Package charts
@@ -61,8 +76,10 @@ jobs:
         make clean package
     - name: Start FATS
       run: $FATS_DIR/start.sh
+      timeout-minutes: 15
     - name: Install riff
-      run: ./.github/workflows/install-riff.sh unstaged
+      run: ./.github/workflows/install-riff-${{ matrix.config.installer }}.sh unstaged
+      timeout-minutes: 15
     - name: Run tests
       run: ./.github/workflows/run-tests.sh
       timeout-minutes: 30
@@ -71,7 +88,7 @@ jobs:
       if: always()
       timeout-minutes: 1
     - name: Uninstall riff
-      run: ./.github/workflows/cleanup-riff.sh
+      run: ./.github/workflows/cleanup-riff-${{ matrix.config.installer }}.sh
       if: always()
       timeout-minutes: 10
     - name: Cleanup FATS
@@ -109,13 +126,27 @@ jobs:
     strategy:
       matrix:
         config:
-        - os: ubuntu-latest
-          qualifier: core
+        - qualifier: core-helm
+          os: ubuntu-latest
+          installer: helm
           cluster: kind
           registry: dockerhub
           runtime: core
-        - os: ubuntu-latest
-          qualifier: knative
+        - qualifier: core-kapp
+          os: ubuntu-latest
+          installer: kapp
+          cluster: kind
+          registry: dockerhub
+          runtime: core
+        - qualifier: knative-helm
+          os: ubuntu-latest
+          installer: helm
+          cluster: gke
+          registry: gcr
+          runtime: knative
+        - qualifier: knative-kapp
+          os: ubuntu-latest
+          installer: kapp
           cluster: gke
           registry: gcr
           runtime: knative
@@ -144,11 +175,15 @@ jobs:
         $FATS_DIR/install.sh kubectl
         $FATS_DIR/install.sh riff
         $FATS_DIR/install.sh helm
+        $FATS_DIR/install.sh ytt 0.14.0
+        $FATS_DIR/install.sh kapp 0.14.0
         $FATS_DIR/install.sh gcloud
     - name: Start FATS
       run: $FATS_DIR/start.sh
+      timeout-minutes: 15
     - name: Install riff
-      run: ./.github/workflows/install-riff.sh staged
+      run: ./.github/workflows/install-riff-${{ matrix.config.installer }}.sh staged
+      timeout-minutes: 15
     - name: Run tests
       run: ./.github/workflows/run-tests.sh
       timeout-minutes: 30
@@ -157,7 +192,7 @@ jobs:
       if: always()
       timeout-minutes: 1
     - name: Uninstall riff
-      run: ./.github/workflows/cleanup-riff.sh
+      run: ./.github/workflows/cleanup-riff-${{ matrix.config.installer }}.sh
       if: always()
       timeout-minutes: 10
     - name: Cleanup FATS
