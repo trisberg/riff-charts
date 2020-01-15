@@ -1,5 +1,6 @@
 VERSION ?= $(shell cat VERSION)
-export ISTIO_VERSION = 1.3.3
+export ISTIO_VERSION = 1.3.6
+export KAFKA_VERSION = 0.20.8
 
 .PHONY: package
 package: repository
@@ -15,7 +16,7 @@ repository: charts/*.sh
 	./charts/package.sh istio ${VERSION}
 	./charts/unpackage.sh istio
 
-	./charts/fetch-kafka.sh kafka 0.20.5
+	./charts/fetch-kafka.sh kafka $(KAFKA_VERSION)
 	./charts/package.sh kafka ${VERSION}
 	./charts/unpackage.sh kafka
 	
