@@ -19,7 +19,9 @@ Installation YAML files for riff (includes Cert-Manager, Istio, Knative, Keda, K
 
    ```sh
    riff_version=0.5.0-snapshot
+   ```
 
+   ```sh
    kubectl create ns apps
    ```
 
@@ -27,8 +29,17 @@ Installation YAML files for riff (includes Cert-Manager, Istio, Knative, Keda, K
    
    ```sh
    kapp deploy -n apps -a cert-manager -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/cert-manager.yaml
+   ```
+
+   ```sh
    kapp deploy -n apps -a kpack -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/kpack.yaml
+   ```
+
+   ```sh
    kapp deploy -n apps -a riff-builders -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-builders.yaml
+   ```
+
+   ```sh
    kapp deploy -n apps -a riff-build -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-build.yaml
    ```
 
@@ -56,6 +67,9 @@ Installation YAML files for riff (includes Cert-Manager, Istio, Knative, Keda, K
    
    ```sh
    kapp deploy -n apps -a knative -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/knative.yaml
+   ```
+
+   ```sh
    kapp deploy -n apps -a riff-knative-runtime -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-knative-runtime.yaml
    ```
 
@@ -63,6 +77,9 @@ Installation YAML files for riff (includes Cert-Manager, Istio, Knative, Keda, K
    
    ```sh
    kapp deploy -n apps -a keda -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/keda.yaml
+   ```
+
+   ```sh
    kapp deploy -n apps -a riff-streaming-runtime -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-streaming-runtime.yaml
    ```
 
@@ -70,32 +87,68 @@ Installation YAML files for riff (includes Cert-Manager, Istio, Knative, Keda, K
 
 ### Uninstall
 
-```
-# remove any riff resources
-kubectl delete riff --all-namespaces --all
+1. Remove any riff resources
 
-# remove riff Streaming Runtime (if installed)
-kapp delete -n apps -a riff-streaming-runtime
-kapp delete -n apps -a keda
+   ```sh
+   kubectl delete riff --all-namespaces --all
+   ```
 
-# remove riff Knative Runtime (if installed)
-kubectl delete knative --all-namespaces --all
-kapp delete -n apps -a riff-knative-runtime
-kapp delete -n apps -a knative
+1. Remove riff Streaming Runtime (if installed)
 
-# remove riff Core Runtime (if installed)
-kapp delete -n apps -a riff-core-runtime
+   ```sh
+   kapp delete -n apps -a riff-streaming-runtime
+   ```
 
-# remove Istio (if installed)
-kapp delete -n apps -a istio
-kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.io | xargs -L1 kubectl delete
+   ```sh
+   kapp delete -n apps -a keda
+   ```
 
-# remove riff Build
-kapp delete -n apps -a riff-build
-kapp delete -n apps -a riff-builders
-kapp delete -n apps -a kpack
-kapp delete -n apps -a cert-manager
-```
+1. Remove riff Knative Runtime (if installed)
+
+   ```sh
+   kubectl delete knative --all-namespaces --all
+   ```
+
+   ```sh
+   kapp delete -n apps -a riff-knative-runtime
+   ```
+
+   ```sh
+   kapp delete -n apps -a knative
+   ```
+
+1. Remove riff Core Runtime (if installed)
+   ```sh
+   kapp delete -n apps -a riff-core-runtime
+   ```
+
+1. Remove Istio (if installed)
+
+   ```sh
+   kapp delete -n apps -a istio
+   ```
+
+   ```sh
+   kubectl get customresourcedefinitions.apiextensions.k8s.io -oname | grep istio.io | xargs -L1 kubectl delete
+   ```
+
+1. Remove riff Build
+
+   ```sh
+   kapp delete -n apps -a riff-build
+   ```
+
+   ```sh
+   kapp delete -n apps -a riff-builders
+   ```
+
+   ```sh
+   kapp delete -n apps -a kpack
+   ```
+
+   ```sh
+   kapp delete -n apps -a cert-manager
+   ```
 
 ## Creating installation YAML
 
