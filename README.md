@@ -1,6 +1,6 @@
 ![](https://github.com/projectriff/charts/workflows/CI/badge.svg)
 
-# projectriff Installation YAML
+# projectriff Release YAML
 
 Release YAML files for riff (includes cert-manager, Istio, Knative, KEDA, kpack and Kafka dependencies).
 
