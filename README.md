@@ -20,7 +20,6 @@ Release YAML files for riff (includes cert-manager, Istio, Knative, KEDA, kpack 
    ```sh
    riff_version=0.5.0-snapshot
 
-   ```sh
    kubectl create ns apps
    ```
 
