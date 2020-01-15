@@ -167,7 +167,7 @@ Optionally, update the chart templates to the latest component builds.
 make templates
 ```
 
-Package install YAML and charts locally. The install YAML will be placed in `uncharted` directory and charts will be placed in the `repository` directory.
+Package locally placing the YAML in the `uncharted` directory.
 
 ```sh
 make package
