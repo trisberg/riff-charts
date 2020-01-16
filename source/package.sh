@@ -4,11 +4,11 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-chart=$1
+component=$1
 version=$2
 
-build_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/build/${chart}"
-source_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/${chart}"
+build_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/build/${component}"
+source_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/${component}"
 
 # download config and apply overlays
 
@@ -63,10 +63,10 @@ if [ -d ${source_dir}/charts ] ; then
   cp -LR ${source_dir}/charts/* ${build_dir}/charts/
 fi
 
-if [ $chart == "istio" ] ; then
+if [ $component == "istio" ] ; then
   helm package ${build_dir} --destination repository --version ${version}
 fi
-if [ $chart == "kafka" ] ; then
+if [ $component == "kafka" ] ; then
   helm package ${build_dir} --destination repository --version ${version}
 fi
 
@@ -75,7 +75,7 @@ fi
 target_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )/target"
 
 # download config and apply overlays
-file=${target_dir}/${chart}.yaml
+file=${target_dir}/${component}.yaml
 rm -f $file
 
 if [ -f ${source_dir}/templates.yaml ] ; then
@@ -92,10 +92,10 @@ if [ -f ${source_dir}/templates.yaml ] ; then
   done < "${source_dir}/templates.yaml"
 fi
 
-if [ $chart == "istio" ] ; then
+if [ $component == "istio" ] ; then
   helm template ./repository/istio-*.tgz --namespace istio-system > ${file}
 fi
-if [ $chart == "kafka" ] ; then
+if [ $component == "kafka" ] ; then
   helm template ./repository/kafka-*.tgz --namespace kafka > ${file}
 
   cat ${file} | sed -e 's/release-name-//g' | sed -e 's/release-name/riff/g' > ${file}.tmp
