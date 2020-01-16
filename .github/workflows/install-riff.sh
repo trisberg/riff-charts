@@ -12,11 +12,11 @@ readonly slug=${version}-${git_timestamp}-${git_sha:0:16}
 source $FATS_DIR/.configure.sh
 
 if [ ${1:-unknown} = staged ] ; then
-  echo "Using staged uncharts"
-  unchart_base=https://storage.googleapis.com/projectriff/charts/uncharted/snapshots/${slug}
+  echo "Using staged releases"
+  release_base=https://storage.googleapis.com/projectriff/releases/snapshots/${slug}
 else
-  echo "Using locally built uncharts"
-  unchart_base=./uncharted
+  echo "Using locally built releases"
+  release_base=./target
 fi
 
 install_app() {
@@ -24,9 +24,9 @@ install_app() {
   local transform=${2:-}
 
   if [ -z $transform ] ; then
-    kapp deploy -n apps -a $name -f ${unchart_base}/${name}.yaml -y
+    kapp deploy -n apps -a $name -f ${release_base}/${name}.yaml -y
   else
-    ytt -f ${unchart_base}/${name}.yaml -f $transform --file-mark ${name}.yaml:type=yaml-plain | kapp deploy -n apps -a $name -f - -y
+    ytt -f ${release_base}/${name}.yaml -f $transform --file-mark ${name}.yaml:type=yaml-plain | kapp deploy -n apps -a $name -f - -y
   fi
 }
 

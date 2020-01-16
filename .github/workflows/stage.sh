@@ -1,4 +1,4 @@
-#!/bin/bash
+F#!/bin/bash
 
 set -o errexit
 set -o nounset
@@ -16,5 +16,5 @@ make clean package
 for f in repository/*.tgz; do mv $f $(echo $f | sed s/${version}/${slug}/); done
 gsutil cp -a public-read repository/*.tgz gs://projectriff/charts/snapshots/
 
-# upload uncharts
-gsutil cp -a public-read uncharted/*.yaml gs://projectriff/charts/uncharted/snapshots/${slug}/
+# upload releases
+gsutil cp -a public-read target/*.yaml gs://projectriff/releases/snapshots/${slug}/

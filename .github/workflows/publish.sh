@@ -21,5 +21,5 @@ helm repo index repository/ --url https://projectriff.storage.googleapis.com/cha
 gsutil -h 'Cache-Control: public, max-age=60' cp -a public-read repository/*.tgz gs://projectriff/charts/releases/
 gsutil -h 'Cache-Control: public, max-age=60' cp -a public-read repository/index.yaml gs://projectriff/charts/releases/
 
-# publish uncharts
-gsutil -h 'Cache-Control: public, max-age=60' cp -a public-read gs://projectriff/charts/uncharted/snapshots/${slug}/*.yaml gs://projectriff/charts/uncharted/${version}/
+# publish releases
+gsutil -h 'Cache-Control: public, max-age=60' cp -a public-read gs://projectriff/releases/snapshots/${slug}/*.yaml gs://projectriff/releases/${version}/
