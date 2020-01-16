@@ -12,9 +12,5 @@ readonly slug=${version}-${git_timestamp}-${git_sha:0:16}
 helm init --client-only
 make clean package
 
-# upload charts
-for f in repository/*.tgz; do mv $f $(echo $f | sed s/${version}/${slug}/); done
-gsutil cp -a public-read repository/*.tgz gs://projectriff/charts/snapshots/
-
 # upload releases
-gsutil cp -a public-read target/*.yaml gs://projectriff/releases/snapshots/${slug}/
+gsutil cp -a public-read target/*.yaml gs://projectriff/release/snapshots/${slug}/

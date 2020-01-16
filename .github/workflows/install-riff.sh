@@ -13,7 +13,7 @@ source $FATS_DIR/.configure.sh
 
 if [ ${1:-unknown} = staged ] ; then
   echo "Using staged releases"
-  release_base=https://storage.googleapis.com/projectriff/releases/snapshots/${slug}
+  release_base=https://storage.googleapis.com/projectriff/release/snapshots/${slug}
 else
   echo "Using locally built releases"
   release_base=./target

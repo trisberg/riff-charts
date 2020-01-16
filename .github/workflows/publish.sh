@@ -10,16 +10,6 @@ readonly git_timestamp=$(TZ=UTC git show --quiet --date='format-local:%Y%m%d%H%M
 readonly slug=${version}-${git_timestamp}-${git_sha:0:16}
 
 make clean
-mkdir -p repository
-gsutil cp gs://projectriff/charts/releases/index.yaml repository/
-gsutil cp gs://projectriff/charts/snapshots/*-${slug}.tgz repository/
-for f in repository/*.tgz; do mv $f $(echo $f | sed s/${slug}/${version}/); done
-
-helm repo index repository/ --url https://projectriff.storage.googleapis.com/charts/releases --merge repository/index.yaml
-
-# publish charts
-gsutil -h 'Cache-Control: public, max-age=60' cp -a public-read repository/*.tgz gs://projectriff/charts/releases/
-gsutil -h 'Cache-Control: public, max-age=60' cp -a public-read repository/index.yaml gs://projectriff/charts/releases/
 
 # publish releases
-gsutil -h 'Cache-Control: public, max-age=60' cp -a public-read gs://projectriff/releases/snapshots/${slug}/*.yaml gs://projectriff/releases/${version}/
+gsutil -h 'Cache-Control: public, max-age=60' cp -a public-read gs://projectriff/release/snapshots/${slug}/*.yaml gs://projectriff/release/${version}/
