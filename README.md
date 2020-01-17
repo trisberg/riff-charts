@@ -26,19 +26,19 @@ Release YAML files for riff (includes cert-manager, Istio, Knative, KEDA, kpack 
 1. Install riff Build (and dependencies)
    
    ```sh
-   kapp deploy -n apps -a cert-manager -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/cert-manager.yaml
+   kapp deploy -n apps -a cert-manager -f https://storage.googleapis.com/projectriff/release/${riff_version}/cert-manager.yaml
    ```
 
    ```sh
-   kapp deploy -n apps -a kpack -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/kpack.yaml
+   kapp deploy -n apps -a kpack -f https://storage.googleapis.com/projectriff/release/${riff_version}/kpack.yaml
    ```
 
    ```sh
-   kapp deploy -n apps -a riff-builders -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-builders.yaml
+   kapp deploy -n apps -a riff-builders -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-builders.yaml
    ```
 
    ```sh
-   kapp deploy -n apps -a riff-build -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-build.yaml
+   kapp deploy -n apps -a riff-build -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-build.yaml
    ```
 
 1. Optionally Install Istio (required for the Knative runtime)
@@ -46,39 +46,39 @@ Release YAML files for riff (includes cert-manager, Istio, Knative, KEDA, kpack 
    If your cluster supports LoadBalancer services (most managed clusters do, but local clusters typically do not):
 
    ```sh
-   kapp deploy -n apps -a istio -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/istio.yaml
+   kapp deploy -n apps -a istio -f https://storage.googleapis.com/projectriff/release/${riff_version}/istio.yaml
    ```
    
    If your cluster does not support LoadBalancer services, or if the above command stalls waiting for the ingress service to become ready, then you'll need to convert the ingress service to a NodePort:
    
    ```sh
-   ytt -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/istio.yaml -f https://storage.googleapis.com/projectriff/charts/overlays/service-nodeport.yaml --file-mark istio.yaml:type=yaml-plain | kapp deploy -n apps -a istio -f - -y
+   ytt -f https://storage.googleapis.com/projectriff/release/${riff_version}/istio.yaml -f https://storage.googleapis.com/projectriff/charts/overlays/service-nodeport.yaml --file-mark istio.yaml:type=yaml-plain | kapp deploy -n apps -a istio -f - -y
    ```
 
 1. Optionally Install riff Core Runtime
    
    ```sh
-   kapp deploy -n apps -a riff-core-runtime -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-core-runtime.yaml
+   kapp deploy -n apps -a riff-core-runtime -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-core-runtime.yaml
    ```
 
 1. Optionally Install riff Knative Runtime (and dependencies)
    
    ```sh
-   kapp deploy -n apps -a knative -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/knative.yaml
+   kapp deploy -n apps -a knative -f https://storage.googleapis.com/projectriff/release/${riff_version}/knative.yaml
    ```
 
    ```sh
-   kapp deploy -n apps -a riff-knative-runtime -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-knative-runtime.yaml
+   kapp deploy -n apps -a riff-knative-runtime -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-knative-runtime.yaml
    ```
 
 1. Optionally Install riff Streaming Runtime (and dependencies)
    
    ```sh
-   kapp deploy -n apps -a keda -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/keda.yaml
+   kapp deploy -n apps -a keda -f https://storage.googleapis.com/projectriff/release/${riff_version}/keda.yaml
    ```
 
    ```sh
-   kapp deploy -n apps -a riff-streaming-runtime -f https://storage.googleapis.com/projectriff/charts/uncharted/${riff_version}/riff-streaming-runtime.yaml
+   kapp deploy -n apps -a riff-streaming-runtime -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-streaming-runtime.yaml
    ```
 
 1. Enjoy.

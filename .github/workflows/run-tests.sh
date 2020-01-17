@@ -14,8 +14,8 @@ source ${FATS_DIR}/macros/create-riff-dev-pod.sh
 for test in java java-boot node npm command; do
   name=fats-cluster-uppercase-${test}
   image=$(fats_image_repo ${name})
-  curl_opts="-H Content-Type:text/plain -H Accept:text/plain -d charts"
-  expected_data="CHARTS"
+  curl_opts="-H Content-Type:text/plain -H Accept:text/plain -d release"
+  expected_data="RELEASE"
 
   echo "##[group]Run function $name"
 

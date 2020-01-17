@@ -5,61 +5,48 @@ export KAFKA_VERSION = 0.20.8
 .PHONY: package
 package: repository
 
-repository: charts/*.sh
+repository: source/*.sh
 	mkdir -p repository
-	mkdir -p uncharted
+	mkdir -p target
 
-	./charts/package.sh cert-manager ${VERSION}
-	./charts/unpackage.sh cert-manager
+	./source/package.sh cert-manager ${VERSION}
 
-	./charts/fetch-istio.sh istio $(ISTIO_VERSION)
-	./charts/package.sh istio ${VERSION}
-	./charts/unpackage.sh istio
+	./source/fetch-istio.sh istio $(ISTIO_VERSION)
+	./source/package.sh istio ${VERSION}
 
-	./charts/fetch-kafka.sh kafka $(KAFKA_VERSION)
-	./charts/package.sh kafka ${VERSION}
-	./charts/unpackage.sh kafka
+	./source/fetch-kafka.sh kafka $(KAFKA_VERSION)
+	./source/package.sh kafka ${VERSION}
 	
-	./charts/package.sh keda ${VERSION}
-	./charts/unpackage.sh keda
+	./source/package.sh keda ${VERSION}
 	
-	./charts/package.sh knative ${VERSION}
-	./charts/unpackage.sh knative
+	./source/package.sh knative ${VERSION}
 	
-	./charts/package.sh kpack ${VERSION}
-	./charts/unpackage.sh kpack
+	./source/package.sh kpack ${VERSION}
 	
-	./charts/package.sh riff-builders ${VERSION}
-	./charts/unpackage.sh riff-builders
+	./source/package.sh riff-builders ${VERSION}
 	
-	./charts/package.sh riff-build ${VERSION}
-	./charts/unpackage.sh riff-build
+	./source/package.sh riff-build ${VERSION}
 	
-	./charts/package.sh riff-core-runtime ${VERSION}
-	./charts/unpackage.sh riff-core-runtime
+	./source/package.sh riff-core-runtime ${VERSION}
 	
-	./charts/package.sh riff-knative-runtime ${VERSION}
-	./charts/unpackage.sh riff-knative-runtime
+	./source/package.sh riff-knative-runtime ${VERSION}
 	
-	./charts/package.sh riff-streaming-runtime ${VERSION}
-	./charts/unpackage.sh riff-streaming-runtime
-	
-	./charts/package.sh riff ${VERSION}
+	./source/package.sh riff-streaming-runtime ${VERSION}
 
 .PHONY: templates
 templates:
-	./charts/update-template.sh cert-manager
-	./charts/update-template.sh keda
-	./charts/update-template.sh knative
-	./charts/update-template.sh kpack
-	./charts/update-template.sh riff-builders
-	./charts/update-template.sh riff-build
-	./charts/update-template.sh riff-core-runtime
-	./charts/update-template.sh riff-knative-runtime
-	./charts/update-template.sh riff-streaming-runtime
+	./source/update-template.sh cert-manager
+	./source/update-template.sh keda
+	./source/update-template.sh knative
+	./source/update-template.sh kpack
+	./source/update-template.sh riff-builders
+	./source/update-template.sh riff-build
+	./source/update-template.sh riff-core-runtime
+	./source/update-template.sh riff-knative-runtime
+	./source/update-template.sh riff-streaming-runtime
 
 .PHONY: clean
 clean:
 	rm -rf build
 	rm -rf repository
-	rm -rf uncharted
+	rm -rf target
