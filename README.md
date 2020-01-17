@@ -161,13 +161,13 @@ Release YAML files for riff (includes cert-manager, Istio, Knative, KEDA, kpack 
 
 ### Steps
 
-Optionally, update the chart templates to the latest component builds.
+Optionally, update the source templates to the latest component builds.
 
 ```sh
 make templates
 ```
 
-Package locally placing the YAML in the `uncharted` directory.
+Package locally placing the YAML in the `target` directory.
 
 ```sh
 make package
