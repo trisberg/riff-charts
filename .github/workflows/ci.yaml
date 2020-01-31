@@ -56,7 +56,7 @@ jobs:
       run: |
         $FATS_DIR/install.sh kubectl
         $FATS_DIR/install.sh riff
-        $FATS_DIR/install.sh helm
+        $FATS_DIR/install.sh helm 3.0.2
         $FATS_DIR/install.sh ytt
         $FATS_DIR/install.sh kapp
         $FATS_DIR/install.sh k8s-tag-resolver
