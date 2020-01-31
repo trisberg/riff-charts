@@ -60,7 +60,8 @@ jobs:
         $FATS_DIR/install.sh ytt
         $FATS_DIR/install.sh kapp
         $FATS_DIR/install.sh k8s-tag-resolver
-        sudo snap install yq
+        sudo wget https://github.com/mikefarah/yq/releases/download/2.4.1/yq_linux_amd64 -O /usr/local/bin/yq
+        sudo chmod +x /usr/local/bin/yq
     - name: Package release
       run: |
         helm init --client-only
