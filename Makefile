@@ -1,5 +1,4 @@
 VERSION ?= $(shell cat VERSION)
-export ISTIO_VERSION = 1.3.6
 export KAFKA_VERSION = 0.20.8
 
 .PHONY: package
@@ -11,8 +10,7 @@ repository: source/*.sh
 
 	./source/package.sh cert-manager ${VERSION}
 
-	./source/fetch-istio.sh istio $(ISTIO_VERSION)
-	./source/package.sh istio ${VERSION}
+	./source/package.sh contour ${VERSION}
 
 	./source/fetch-kafka.sh kafka $(KAFKA_VERSION)
 	./source/package.sh kafka ${VERSION}
