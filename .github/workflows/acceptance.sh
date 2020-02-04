@@ -13,7 +13,15 @@ source ${FATS_DIR}/macros/create-riff-dev-pod.sh
 
 if [ $RUNTIME = "streaming" ]; then
   echo "##[group]Create gateway"
-  riff streaming kafka-gateway create franz --bootstrap-servers kafka.kafka.svc.cluster.local:9092 --namespace $NAMESPACE --tail
+  if [ $GATEWAY = "inmemory" ]; then
+    riff streaming inmemory-gateway create test --namespace $NAMESPACE --tail
+  fi
+  if [ $GATEWAY = "kafka" ]; then
+    riff streaming kafka-gateway create test --bootstrap-servers kafka.kafka.svc.cluster.local:9092 --namespace $NAMESPACE --tail
+  fi
+  if [ $GATEWAY = "pulsar" ]; then
+    riff streaming pulsar-gateway create test --service-url pulsar://pulsar.pulsar.svc.cluster.local:6650 --namespace $NAMESPACE --tail
+  fi
   echo "##[endgroup]"
 fi
 
@@ -68,8 +76,8 @@ for test in java java-boot node npm command; do
     lower_stream=${name}-lower
     upper_stream=${name}-upper
 
-    riff streaming stream create ${lower_stream} --namespace $NAMESPACE --gateway franz --content-type 'text/plain' --tail
-    riff streaming stream create ${upper_stream} --namespace $NAMESPACE --gateway franz --content-type 'text/plain' --tail
+    riff streaming stream create ${lower_stream} --namespace $NAMESPACE --gateway test --content-type 'text/plain' --tail
+    riff streaming stream create ${upper_stream} --namespace $NAMESPACE --gateway test --content-type 'text/plain' --tail
 
     riff streaming processor create $name --function-ref $name --namespace $NAMESPACE --input ${lower_stream} --output ${upper_stream} --tail
 
@@ -107,5 +115,5 @@ for test in java java-boot node npm command; do
 done
 
 if [ $RUNTIME = "streaming" ]; then
-  riff streaming kafka-gateway delete franz --namespace $NAMESPACE
+  riff streaming ${GATEWAY}-gateway delete test --namespace $NAMESPACE
 fi

@@ -29,8 +29,14 @@ if [ $RUNTIME = "streaming" ]; then
   uninstall_app riff-streaming-runtime
   uninstall_app keda
 
-  echo "Uninstall Kafka"
-  uninstall_app internal-only-kafka
+  if [ $GATEWAY = "kafka" ]; then
+    echo "Uninstall Kafka"
+    uninstall_app internal-only-kafka
+  fi
+  if [ $GATEWAY = "pulsar" ]; then
+    echo "Uninstall Pulsar"
+    uninstall_app internal-only-pulsar
+  fi
 fi
 
 echo "Uninstall riff Build"

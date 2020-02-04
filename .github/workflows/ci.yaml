@@ -10,7 +10,7 @@ on:
 env:
   FATS_DIR: fats
   FATS_REPO: projectriff/fats
-  FATS_REFSPEC: fa0d71d66ad163346f3ad20d7ab55784d6a11b20 # master as of 2020-01-30
+  FATS_REFSPEC: 41932db26b9d25a1e2e9bfc17b0f6a1f750f7242 # master as of 2020-02-03
 
 jobs:
 
@@ -30,11 +30,25 @@ jobs:
           cluster: kind
           registry: docker-daemon
           runtime: knative
-        - qualifier: streaming
+        - qualifier: streaming-inmemory
           os: ubuntu-latest
           cluster: kind
           registry: docker-daemon
           runtime: streaming
+          gateway: inmemory
+        - qualifier: streaming-kafka
+          os: ubuntu-latest
+          cluster: kind
+          registry: docker-daemon
+          runtime: streaming
+          gateway: kafka
+        # TODO restore pulsar tests
+        # - qualifier: streaming-pulsar
+        #   os: ubuntu-latest
+        #   cluster: kind
+        #   registry: docker-daemon
+        #   runtime: streaming
+        #   gateway: pulsar
       fail-fast: false
     runs-on: ${{ matrix.config.os }}
     steps:
@@ -49,6 +63,7 @@ jobs:
         echo "##[set-env name=CLUSTER_NAME]release-${job}-${{ matrix.config.qualifier }}"
         echo "##[set-env name=NAMESPACE]release-${job}-${{ matrix.config.qualifier }}"
         echo "##[set-env name=RUNTIME]${{ matrix.config.runtime }}"
+        echo "##[set-env name=GATEWAY]${{ matrix.config.gateway }}"
         echo "##[add-path]$(go env GOPATH)/bin"
     - name: Fetch FATS
       run: ./.github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
@@ -131,11 +146,25 @@ jobs:
           cluster: gke
           registry: gcr
           runtime: knative
-        - qualifier: streaming
+        - qualifier: streaming-inmemory
           os: ubuntu-latest
-          cluster: gke
-          registry: gcr
+          cluster: kind
+          registry: dockerhub
           runtime: streaming
+          gateway: inmemory
+        - qualifier: streaming-kafka
+          os: ubuntu-latest
+          cluster: kind
+          registry: dockerhub
+          runtime: streaming
+          gateway: kafka
+        # TODO restore pulsar tests
+        # - qualifier: streaming-pulsar
+        #   os: ubuntu-latest
+        #   cluster: kind
+        #   registry: dockerhub
+        #   runtime: streaming
+        #   gateway: pulsar
       fail-fast: false
     runs-on: ${{ matrix.config.os }}
     env:
@@ -154,6 +183,7 @@ jobs:
         echo "##[set-env name=CLUSTER_NAME]release-${job}-${{ matrix.config.qualifier }}"
         echo "##[set-env name=NAMESPACE]release-${job}-${{ matrix.config.qualifier }}"
         echo "##[set-env name=RUNTIME]${{ matrix.config.runtime }}"
+        echo "##[set-env name=GATEWAY]${{ matrix.config.gateway }}"
     - name: Fetch FATS
       run: ./.github/workflows/fats-fetch.sh $FATS_DIR $FATS_REFSPEC $FATS_REPO
     - name: Install tools

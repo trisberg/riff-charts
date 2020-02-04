@@ -65,6 +65,12 @@ if [ $RUNTIME = "streaming" ]; then
   install_app keda
   install_app riff-streaming-runtime
 
-  echo "Install Kafka"
-  install_app internal-only-kafka
+  if [ $GATEWAY = "kafka" ]; then
+    echo "Install Kafka"
+    install_app internal-only-kafka
+  fi
+  if [ $GATEWAY = "pulsar" ]; then
+    echo "Install Pulsar"
+    install_app internal-only-pulsar
+  fi
 fi
