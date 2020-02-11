@@ -23,25 +23,13 @@ Release YAML files for riff (includes cert-manager, Knative, KEDA, kpack, Contou
    kubectl create ns apps
    ```
 
-1. Install riff Build (and dependencies)
+1. Install Cert Manager
    
    ```sh
    kapp deploy -n apps -a cert-manager -f https://storage.googleapis.com/projectriff/release/${riff_version}/cert-manager.yaml
    ```
 
-   ```sh
-   kapp deploy -n apps -a kpack -f https://storage.googleapis.com/projectriff/release/${riff_version}/kpack.yaml
-   ```
-
-   ```sh
-   kapp deploy -n apps -a riff-builders -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-builders.yaml
-   ```
-
-   ```sh
-   kapp deploy -n apps -a riff-build -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-build.yaml
-   ```
-
-1. Install Contour (for core or knative runtimes)
+1. Install Contour for ingress
    
    If your cluster supports LoadBalancer services (most managed clusters do, but local clusters typically do not):
 
@@ -55,32 +43,36 @@ Release YAML files for riff (includes cert-manager, Knative, KEDA, kpack, Contou
    ytt -f https://storage.googleapis.com/projectriff/release/${riff_version}/contour.yaml -f https://storage.googleapis.com/projectriff/charts/overlays/service-nodeport.yaml --file-mark contour.yaml:type=yaml-plain | kapp deploy -n apps -a contour -f - -y
    ```
 
+1. Install riff Build (and dependencies)
+   
+   ```sh
+   kapp deploy -n apps -a riff-build \
+     -f https://storage.googleapis.com/projectriff/release/${riff_version}/kpack.yaml \
+     -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-builders.yaml \
+     -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-build.yaml
+   ```
+
+1. Optionally Install riff Knative Runtime (and dependencies)
+   
+   ```sh
+   kapp deploy -n apps -a riff-knative-runtime \
+     -f https://storage.googleapis.com/projectriff/release/${riff_version}/knative.yaml \
+     -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-knative-runtime.yaml
+   ```
+
 1. Optionally Install riff Core Runtime
    
    ```sh
    kapp deploy -n apps -a riff-core-runtime -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-core-runtime.yaml
    ```
 
-1. Optionally Install riff Knative Runtime (and dependencies)
-   
-   ```sh
-   kapp deploy -n apps -a knative -f https://storage.googleapis.com/projectriff/release/${riff_version}/knative.yaml
-   ```
-
-   ```sh
-   kapp deploy -n apps -a riff-knative-runtime -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-knative-runtime.yaml
-   ```
-
 1. Optionally Install riff Streaming Runtime (and dependencies)
    
    ```sh
-   kapp deploy -n apps -a keda -f https://storage.googleapis.com/projectriff/release/${riff_version}/keda.yaml
+   kapp deploy -n apps -a riff-streaming-runtime \
+     -f https://storage.googleapis.com/projectriff/release/${riff_version}/keda.yaml \
+     -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-streaming-runtime.yaml
    ```
-
-   ```sh
-   kapp deploy -n apps -a riff-streaming-runtime -f https://storage.googleapis.com/projectriff/release/${riff_version}/riff-streaming-runtime.yaml
-   ```
-
 1. Enjoy.
 
 ### Uninstall
@@ -97,10 +89,6 @@ Release YAML files for riff (includes cert-manager, Knative, KEDA, kpack, Contou
    kapp delete -n apps -a riff-streaming-runtime
    ```
 
-   ```sh
-   kapp delete -n apps -a keda
-   ```
-
 1. Remove riff Knative Runtime (if installed)
 
    ```sh
@@ -111,19 +99,9 @@ Release YAML files for riff (includes cert-manager, Knative, KEDA, kpack, Contou
    kapp delete -n apps -a riff-knative-runtime
    ```
 
-   ```sh
-   kapp delete -n apps -a knative
-   ```
-
 1. Remove riff Core Runtime (if installed)
    ```sh
    kapp delete -n apps -a riff-core-runtime
-   ```
-
-1. Remove Contour (if installed)
-
-   ```sh
-   kapp delete -n apps -a contour
    ```
 
 1. Remove riff Build
@@ -132,13 +110,13 @@ Release YAML files for riff (includes cert-manager, Knative, KEDA, kpack, Contou
    kapp delete -n apps -a riff-build
    ```
 
-   ```sh
-   kapp delete -n apps -a riff-builders
-   ```
+1. Remove Contour
 
    ```sh
-   kapp delete -n apps -a kpack
+   kapp delete -n apps -a contour
    ```
+
+1. Remove Cert Manager
 
    ```sh
    kapp delete -n apps -a cert-manager
